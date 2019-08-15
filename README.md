@@ -1,5 +1,7 @@
 # Angular 7+ bootstrap date & time picker
 
+**Customized for VMware Clarity to use `clr-row` and `clr-col` classes for grid instead of bootstrap. May look at removing bootstrap dependency in future.**
+
 Native Angular (7+) datetime picker component styled by Twitter Bootstrap 4.
 
 [![npm downloads](https://img.shields.io/npm/dm/angular-bootstrap-datetimepicker.svg)](https://www.npmjs.com/package/angular-bootstrap-datetimepicker)
