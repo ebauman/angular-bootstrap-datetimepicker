@@ -22,7 +22,7 @@
   </div>
   <div (keydown)="_handleKeyDown($event)">
     <div *ngIf="_model.rowLabels?.length" class="clr-row no-gutters">
-      <div *ngFor="let label of _model.rowLabels" class="clr-col align-items-center no-gutters dl-abdtp-col-label">{{label}}</div>
+      <div *ngFor="let label of _model.rowLabels " class="clr-col align-items-center no-gutters dl-abdtp-col-label">{{label}}</div>
     </div>
     <div *ngFor="let row of _model.rows" class="clr-row align-items-center no-gutters">
       <div *ngFor="let cell of row.cells"
