@@ -38,8 +38,10 @@ export class DlMonthModelProvider implements DlModelProvider {
    * @param changes
    *  the input changes detected by Angular.
    */
-  onChanges(changes: SimpleChanges): void {
-  }
+  onChanges(
+    // @ts-ignore
+    changes: SimpleChanges
+  ): void {}
 
   /**
    * Returns the `month` model for the specified moment in `local` time with the
@@ -73,7 +75,7 @@ export class DlMonthModelProvider implements DlModelProvider {
       ? selectedMilliseconds
       : moment(selectedMilliseconds).startOf('month').valueOf();
 
-    const result = {
+    return {
       viewName: 'month',
       viewLabel: startDate.format('YYYY'),
       activeDate: activeValue,
@@ -94,11 +96,6 @@ export class DlMonthModelProvider implements DlModelProvider {
       },
       rows: rowNumbers.map(rowOfMonths)
     };
-
-    result.leftButton.classes[`${result.leftButton.value}`] = true;
-    result.rightButton.classes[`${result.rightButton.value}`] = true;
-
-    return result;
 
     function rowOfMonths(rowNumber) {
 

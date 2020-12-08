@@ -7,14 +7,12 @@
  * found in the LICENSE file at https://github.com/dalelotts/angular-bootstrap-datetimepicker/blob/master/LICENSE
  */
 
-import {Component, DebugElement, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import * as moment from 'moment';
-import {DlDateTimeNumberModule} from '../../../core';
-import {DlDateTimePickerComponent} from '../../dl-date-time-picker.component';
-import {DlDateTimePickerModule} from '../../dl-date-time-picker.module';
+import {DlDateTimeNumberModule, DlDateTimePickerComponent, DlDateTimePickerModule} from '../../../public-api';
 import {
   dispatchKeyboardEvent,
   DOWN_ARROW,
@@ -34,7 +32,7 @@ import {DEC, JAN} from '../month-constants';
   template: '<dl-date-time-picker startView="month"></dl-date-time-picker>'
 })
 class MonthStartViewComponent {
-  @ViewChild(DlDateTimePickerComponent) picker: DlDateTimePickerComponent<number>;
+  @ViewChild(DlDateTimePickerComponent, {static: false}) picker: DlDateTimePickerComponent<number>;
 }
 
 @Component({
@@ -42,7 +40,7 @@ class MonthStartViewComponent {
   template: '<dl-date-time-picker startView="month" [(ngModel)]="selectedDate"></dl-date-time-picker>'
 })
 class MonthStartViewWithNgModelComponent {
-  @ViewChild(DlDateTimePickerComponent) picker: DlDateTimePickerComponent<number>;
+  @ViewChild(DlDateTimePickerComponent, {static: false}) picker: DlDateTimePickerComponent<number>;
   selectedDate = new Date(2017, DEC, 22).getTime();
 }
 
@@ -66,8 +64,6 @@ describe('DlDateTimePickerComponent startView=month', () => {
   describe('default behavior ', () => {
     let component: MonthStartViewComponent;
     let fixture: ComponentFixture<MonthStartViewComponent>;
-    let debugElement: DebugElement;
-    let nativeElement: any;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(MonthStartViewComponent);
@@ -75,8 +71,6 @@ describe('DlDateTimePickerComponent startView=month', () => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         component = fixture.componentInstance;
-        debugElement = fixture.debugElement;
-        nativeElement = debugElement.nativeElement;
       });
     }));
 
@@ -99,12 +93,12 @@ describe('DlDateTimePickerComponent startView=month', () => {
       const currentElements = fixture.debugElement.queryAll(By.css('.dl-abdtp-now'));
       expect(currentElements.length).toBe(1);
       expect(currentElements[0].nativeElement.textContent.trim()).toBe(moment().format('MMM'));
-      expect(currentElements[0].nativeElement.classList).toContain(moment().startOf('month').valueOf().toString());
+      expect(currentElements[0].attributes['dl-abdtp-value']).toBe(moment().startOf('month').valueOf().toString());
     });
 
     it('should NOT contain an .dl-abdtp-now element in the previous year', () => {
       // click on the left button to move to the previous hour
-      debugElement.query(By.css('.dl-abdtp-left-button')).nativeElement.click();
+      fixture.debugElement.query(By.css('.dl-abdtp-left-button')).nativeElement.click();
       fixture.detectChanges();
 
       const currentElements = fixture.debugElement.queryAll(By.css('.dl-abdtp-now'));
@@ -113,7 +107,7 @@ describe('DlDateTimePickerComponent startView=month', () => {
 
     it('should NOT contain an .dl-abdtp-now element in the next year', () => {
       // click on the left button to move to the previous hour
-      debugElement.query(By.css('.dl-abdtp-right-button')).nativeElement.click();
+      fixture.debugElement.query(By.css('.dl-abdtp-right-button')).nativeElement.click();
       fixture.detectChanges();
 
       const currentElements = fixture.debugElement.queryAll(By.css('.dl-abdtp-now'));
@@ -129,7 +123,7 @@ describe('DlDateTimePickerComponent startView=month', () => {
       const currentElements = fixture.debugElement.queryAll(By.css('.dl-abdtp-active'));
       expect(currentElements.length).toBe(1);
       expect(currentElements[0].nativeElement.textContent.trim()).toBe(moment().format('MMM'));
-      expect(currentElements[0].nativeElement.classList).toContain(moment().startOf('month').valueOf().toString());
+      expect(currentElements[0].attributes['dl-abdtp-value']).toBe(moment().startOf('month').valueOf().toString());
     });
 
     it('should contain 1 .dl-abdtp-selected element for the current month', () => {
@@ -139,7 +133,7 @@ describe('DlDateTimePickerComponent startView=month', () => {
       // Bug: The value change is not detected until there is some user interaction
       // **ONlY** when there is no ngModel binding on the component.
       // I think it is related to https://github.com/angular/angular/issues/10816
-      const activeElement = debugElement.query(By.css('.dl-abdtp-active')).nativeElement;
+      const activeElement = fixture.debugElement.query(By.css('.dl-abdtp-active')).nativeElement;
       activeElement.focus();
       dispatchKeyboardEvent(activeElement, 'keydown', HOME);
       fixture.detectChanges();
@@ -147,7 +141,7 @@ describe('DlDateTimePickerComponent startView=month', () => {
       const selectedElements = fixture.debugElement.queryAll(By.css('.dl-abdtp-selected'));
       expect(selectedElements.length).toBe(1);
       expect(selectedElements[0].nativeElement.textContent.trim()).toBe(moment().format('MMM'));
-      expect(selectedElements[0].nativeElement.classList).toContain(moment().startOf('month').valueOf().toString());
+      expect(selectedElements[0].attributes['dl-abdtp-value']).toBe(moment().startOf('month').valueOf().toString());
     });
 
   });
@@ -155,8 +149,6 @@ describe('DlDateTimePickerComponent startView=month', () => {
   describe('ngModel=2017-12-22', () => {
     let component: MonthStartViewWithNgModelComponent;
     let fixture: ComponentFixture<MonthStartViewWithNgModelComponent>;
-    let debugElement: DebugElement;
-    let nativeElement: any;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(MonthStartViewWithNgModelComponent);
@@ -164,8 +156,6 @@ describe('DlDateTimePickerComponent startView=month', () => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         component = fixture.componentInstance;
-        debugElement = fixture.debugElement;
-        nativeElement = debugElement.nativeElement;
       });
     }));
 
@@ -177,17 +167,17 @@ describe('DlDateTimePickerComponent startView=month', () => {
 
     it('should contain 12 .dl-abdtp-month elements with start of month utc time as class and role of gridcell', () => {
 
-      const expectedClass = new Array(12)
-        .fill(0)
-        .map((value, index) => new Date(2017, JAN + index, 1).getTime());
+      const expectedValues = new Array(12)
+        .fill(JAN)
+        .map((january, index) => new Date(2017, january + index, 1).getTime());
 
       const monthElements = fixture.debugElement.queryAll(By.css('.dl-abdtp-month'));
       expect(monthElements.length).toBe(12);
 
       monthElements.forEach((monthElement, index) => {
-        const key = expectedClass[index];
-        const ariaLabel = moment(key).format('MMM YYYY');
-        expect(monthElement.nativeElement.classList).toContain(key.toString());
+        const expectedValue = expectedValues[index];
+        const ariaLabel = moment(expectedValue).format('MMM YYYY');
+        expect(monthElement.attributes['dl-abdtp-value']).toBe(expectedValue.toString(10), index);
         expect(monthElement.attributes['role']).toBe('gridcell', index);
         expect(monthElement.attributes['aria-label']).toBe(ariaLabel, index);
       });
@@ -203,9 +193,9 @@ describe('DlDateTimePickerComponent startView=month', () => {
       expect(leftButton.attributes['aria-label']).toBe('Go to 2016');
     });
 
-    it('should have a class for previous year value on .dl-abdtp-left-button ', () => {
+    it('should have a dl-abdtp-value attribute with the previous year value on .dl-abdtp-left-button ', () => {
       const leftButton = fixture.debugElement.query(By.css('.dl-abdtp-left-button'));
-      expect(leftButton.nativeElement.classList).toContain(new Date(2016, JAN, 1).getTime().toString());
+      expect(leftButton.attributes['dl-abdtp-value']).toBe(new Date(2016, JAN, 1).getTime().toString());
     });
 
     it('should switch to previous year value after clicking .dl-abdtp-left-button', () => {
@@ -218,7 +208,7 @@ describe('DlDateTimePickerComponent startView=month', () => {
 
       const monthElements = fixture.debugElement.queryAll(By.css('.dl-abdtp-month'));
       expect(monthElements[0].nativeElement.textContent.trim()).toBe('Jan');
-      expect(monthElements[0].nativeElement.classList).toContain(new Date(2016, JAN, 1).getTime().toString());
+      expect(monthElements[0].attributes['dl-abdtp-value']).toBe(new Date(2016, JAN, 1).getTime().toString());
     });
 
     it('.dl-abdtp-right-button should contain a title', () => {
@@ -231,9 +221,9 @@ describe('DlDateTimePickerComponent startView=month', () => {
       expect(leftButton.attributes['aria-label']).toBe('Go to 2018');
     });
 
-    it('should have a class for next year value on .dl-abdtp-right-button ', () => {
+    it('should have a dl-abdtp-value attribute with the next year value on .dl-abdtp-right-button ', () => {
       const rightButton = fixture.debugElement.query(By.css('.dl-abdtp-right-button'));
-      expect(rightButton.nativeElement.classList).toContain(new Date(2018, JAN, 1).getTime().toString());
+      expect(rightButton.attributes['dl-abdtp-value']).toBe(new Date(2018, JAN, 1).getTime().toString());
     });
 
     it('should switch to next year value after clicking .dl-abdtp-right-button', () => {
@@ -246,7 +236,7 @@ describe('DlDateTimePickerComponent startView=month', () => {
 
       const monthElements = fixture.debugElement.queryAll(By.css('.dl-abdtp-month'));
       expect(monthElements[0].nativeElement.textContent.trim()).toBe('Jan');
-      expect(monthElements[0].nativeElement.classList).toContain(new Date(2018, JAN, 1).getTime().toString());
+      expect(monthElements[0].attributes['dl-abdtp-value']).toBe(new Date(2018, JAN, 1).getTime().toString());
     });
 
     it('.dl-abdtp-up-button should contain a title', () => {

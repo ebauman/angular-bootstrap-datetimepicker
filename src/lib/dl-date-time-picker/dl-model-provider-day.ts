@@ -38,8 +38,10 @@ export class DlDayModelProvider implements DlModelProvider {
    * @param changes
    *  the input changes detected by Angular.
    */
-  onChanges(changes: SimpleChanges): void {
-  }
+  onChanges(
+    // @ts-ignore
+    changes: SimpleChanges
+  ): void {}
 
   /**
    * Returns the `day` model for the specified moment in `local` time with the
@@ -75,7 +77,7 @@ export class DlDayModelProvider implements DlModelProvider {
       ? selectedMilliseconds
       : moment(selectedMilliseconds).startOf('day').valueOf();
 
-    const result: DlDateTimePickerModel = {
+    return {
       viewName: 'day',
       viewLabel: startOfMonth.format('MMM YYYY'),
       activeDate: activeValue,
@@ -97,11 +99,6 @@ export class DlDayModelProvider implements DlModelProvider {
       rowLabels: columnNumbers.map((column) => moment().weekday(column).format('dd')),
       rows: rowNumbers.map(rowOfDays)
     };
-
-    result.leftButton.classes[`${result.leftButton.value}`] = true;
-    result.rightButton.classes[`${result.rightButton.value}`] = true;
-
-    return result;
 
     function rowOfDays(rowNumber) {
       const currentMoment = moment();

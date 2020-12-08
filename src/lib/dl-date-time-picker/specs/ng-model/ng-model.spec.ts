@@ -7,21 +7,20 @@
  * found in the LICENSE file at https://github.com/dalelotts/angular-bootstrap-datetimepicker/blob/master/LICENSE
  */
 
-import {Component, DebugElement, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
-import {DlDateTimeNumberModule} from '../../../core';
-import {DlDateTimePickerComponent} from '../../dl-date-time-picker.component';
-import {DlDateTimePickerModule} from '../../dl-date-time-picker.module';
+import {DlDateTimeNumberModule, DlDateTimePickerComponent, DlDateTimePickerModule} from '../../../public-api';
 import {dispatchKeyboardEvent, ENTER, SPACE} from '../dispatch-events';
 import {JAN} from '../month-constants';
+import * as moment from 'moment';
 
 @Component({
   template: '<dl-date-time-picker [(ngModel)]="selectedDate" startView="year" minView="year"></dl-date-time-picker>'
 })
 class YearSelectorComponent {
-  @ViewChild(DlDateTimePickerComponent) picker: DlDateTimePickerComponent<number>;
+  @ViewChild(DlDateTimePickerComponent, {static: false}) picker: DlDateTimePickerComponent<number>;
   selectedDate: number;
 }
 
@@ -44,14 +43,10 @@ describe('DlDateTimePickerComponent', () => {
   describe('startView=year', () => {
     let component: YearSelectorComponent;
     let fixture: ComponentFixture<YearSelectorComponent>;
-    let debugElement: DebugElement;
-    let nativeElement: any;
 
     beforeEach(() => {
       fixture = TestBed.createComponent(YearSelectorComponent);
       component = fixture.componentInstance;
-      debugElement = fixture.debugElement;
-      nativeElement = debugElement.nativeElement;
       fixture.detectChanges();
     });
 
@@ -105,14 +100,16 @@ describe('DlDateTimePickerComponent', () => {
     });
 
     it('should store the value in ngModel when clicking a .dl-abdtp-year', () => {
+      const startYear = (Math.trunc(moment().year() / 10) * 10);
       const yearElements = fixture.debugElement.queryAll(By.css('.dl-abdtp-year'));
       yearElements[9].nativeElement.click(); // 2019-01-01
       fixture.detectChanges();
 
-      expect(component.selectedDate).toBe(new Date(2019, JAN, 1).getTime());
+      expect(component.selectedDate).toBe(new Date(startYear + 9, JAN, 1).getTime());
     });
 
     it('should store the value internally when clicking a .dl-abdtp-year', function () {
+      const startYear = (Math.trunc(moment().year() / 10) * 10);
       const changeSpy = jasmine.createSpy('change listener');
       component.picker.change.subscribe(changeSpy);
 
@@ -120,7 +117,7 @@ describe('DlDateTimePickerComponent', () => {
       yearElements[8].nativeElement.click();  // 2018-01-01
       fixture.detectChanges();
 
-      const expected = new Date(2018, JAN, 1).getTime();
+      const expected = new Date(startYear + 8, JAN, 1).getTime();
       expect(component.picker.value).toBe(expected);
       expect(changeSpy).toHaveBeenCalled();
       expect(changeSpy.calls.first().args[0].value).toBe(expected);

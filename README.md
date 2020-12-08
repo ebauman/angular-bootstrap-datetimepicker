@@ -1,4 +1,4 @@
-# Angular 7+ bootstrap date & time picker
+# Angular 8+ bootstrap date & time picker
 
 **Customized for VMware Clarity to use `clr-row` and `clr-col` classes for grid instead of bootstrap. May look at removing bootstrap dependency in future.**
 
@@ -24,6 +24,13 @@ Native Angular (7+) datetime picker component styled by Twitter Bootstrap 4.
 
 
 *Read this in other languages: [Spanish](https://github.com/dalelotts/angular-bootstrap-datetimepicker/blob/master/README.es_MX.md)*
+
+## On Angular 7.x?
+
+Use install version 3.1.0
+
+`npm install angular-bootstrap-datetimepicker@3.1.0`
+
 ## On Angular 1.x?
 
 See [angularjs-bootstrap-datetimepicker](https://github.com/dalelotts/angularjs-bootstrap-datetimepicker)
@@ -31,13 +38,15 @@ See [angularjs-bootstrap-datetimepicker](https://github.com/dalelotts/angularjs-
 ## Support the project
 I know this is a tiny component but many people use it in production (high 5 to all of us) - if you happen to use this component please click the star button (at the top of the page) - it means a lot to all the contributors.
 
+![](./screenshots/stars.png)
+
 ## Peer Dependencies
 
 Peer dependencies:
- * Angular 7.x or higher (1.x will not work)
+ * Angular 8.x or higher (1.x will not work)
  * moment.js 2.22.2 or higher for date parsing and formatting
  * bootstrap 4.x for css/layout
- * open-iconic for the default icon's (you can use any icon libary you like)
+ * open-iconic for the default icon's (you can use any icon library you like)
  
 jQuery is NOT required.
 
@@ -106,9 +115,17 @@ It uses bootstrap's flex `row` and `col` classes to layout the date/time picker 
 If the parent container is too narrow (less than 340px in english), the row and column layout may wrap in ways that are not attractive. 
 Other languages/locals may require a wider container to fit the contents.
 
+## End-to-End (e2e) testing with protractor
+
+The user interactions with a date-time picker make it difficult to write e2e tests that exactly replicate the users interaction with the picker.
+
+Fortunately, this repository contains a file you can use in your e2e tests to cause the date/time picker to select any specified date.
+
+See [./e2e/src/dl-date-time-picker-protractor.ts](./e2e/src/dl-date-time-picker-protractor.ts) for details.
+
 ## Configuration
 
-Use the [automated configuration generator](https://angular-bootstrap-datetimepicker.stackblitz.io/) (please let me know if it does not work for your use case!), 
+Use the [automated configuration generator](https://stackblitz.com/github/dalelotts/angular-bootstrap-datetimepicker-demo) (please let me know if it does not work for your use case!), 
 or see [https://dalelotts.github.io/angular-bootstrap-datetimepicker/](https://dalelotts.github.io/angular-bootstrap-datetimepicker/)
 for the automatically generated documentation.
 
@@ -210,6 +227,11 @@ npm test
 The karma task will try to open Chrome as a browser in which to run the tests.
 Make sure Chrome is available or change the browsers setting in karma.config.js
 
+## Stars history
+
+[![Stargazers over time](https://starchart.cc/dalelotts/angular-bootstrap-datetimepicker.svg)](https://starchart.cc/dalelotts/angular-bootstrap-datetimepicker)
+
+
 ## License
 
 angular-bootstrap-datetimepicker is released under the MIT license and is copyright 2015 Knight Rider Consulting, Inc.. Boiled down to smaller chunks, it can be described with the following conditions.
@@ -240,14 +262,6 @@ angular-bootstrap-datetimepicker is released under the MIT license and is copyri
 
 The full angular-bootstrap-datetimepicker license is located [in the project repository](LICENSE) for more information.
 
-
-## Donating
-Support this project and other work by Dale Lotts via [gittip][gittip-dalelotts].
-
-[![Support via Gittip][gittip-badge]][gittip-dalelotts]
-
-[gittip-badge]: https://rawgithub.com/twolfson/gittip-badge/master/dist/gittip.png
-[gittip-dalelotts]: https://www.gittip.com/dalelotts/
 
 [license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
 [license-url]: LICENSE

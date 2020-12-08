@@ -55,8 +55,10 @@ export class DlYearModelProvider implements DlModelProvider {
    * @param changes
    *  the input changes detected by Angular.
    */
-  onChanges(changes: SimpleChanges): void {
-  }
+  onChanges(
+    // @ts-ignore
+    changes: SimpleChanges
+  ): void {}
 
   /**
    * Returns the `year` model for the specified moment in `local` time with the
@@ -91,7 +93,7 @@ export class DlYearModelProvider implements DlModelProvider {
       ? selectedMilliseconds
       : moment(selectedMilliseconds).startOf('year').valueOf();
 
-    const result: DlDateTimePickerModel = {
+    return {
       viewName: 'year',
       viewLabel: `${pastYear}-${futureYear}`,
       activeDate: activeValue,
@@ -107,11 +109,6 @@ export class DlYearModelProvider implements DlModelProvider {
       },
       rows: rowNumbers.map(rowOfYears.bind(this))
     };
-
-    result.leftButton.classes[`${result.leftButton.value}`] = true;
-    result.rightButton.classes[`${result.rightButton.value}`] = true;
-
-    return result;
 
     function rowOfYears(rowNumber) {
 

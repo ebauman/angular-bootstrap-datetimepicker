@@ -11,17 +11,14 @@ import {Component, DebugElement, ViewChild} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
-import {DlDateTimeNumberModule} from '../../../core';
-import {DateButton} from '../../dl-date-time-picker-date-button';
-import {DlDateTimePickerComponent} from '../../dl-date-time-picker.component';
-import {DlDateTimePickerModule} from '../../dl-date-time-picker.module';
+import {DateButton, DlDateTimeNumberModule, DlDateTimePickerComponent, DlDateTimePickerModule} from '../../../public-api';
 
 @Component({
   template: '<dl-date-time-picker [selectFilter]="selectFilter" [(ngModel)]="selectedDate" maxView="day"></dl-date-time-picker>'
 })
 class SelectFilterComponent {
   now = Date.now();
-  @ViewChild(DlDateTimePickerComponent) picker: DlDateTimePickerComponent<number>;
+  @ViewChild(DlDateTimePickerComponent, {static: false}) picker: DlDateTimePickerComponent<number>;
   selectedDate: number;
   selectFilter = (dateButton: DateButton) => dateButton.value > this.now;
 }
@@ -30,8 +27,8 @@ class SelectFilterComponent {
   template: '<dl-date-time-picker [selectFilter]="selectFilter" [(ngModel)]="selectedDate"></dl-date-time-picker>'
 })
 class UndefinedSelectFilterComponent {
-  @ViewChild(DlDateTimePickerComponent) picker: DlDateTimePickerComponent<number>;
-  selectFilter: (viewName: string, dateButton: DateButton) => boolean;   // intentionally did not assign value
+  @ViewChild(DlDateTimePickerComponent, {static: false}) picker: DlDateTimePickerComponent<number>;
+  selectFilter: (dateButton: DateButton, viewName: string) => boolean;   // intentionally did not assign value
   selectedDate: number; // intentionally did not assign value
 }
 
@@ -56,7 +53,6 @@ describe('DlDateTimePickerComponent startDate', () => {
     let component: SelectFilterComponent;
     let fixture: ComponentFixture<SelectFilterComponent>;
     let debugElement: DebugElement;
-    let nativeElement: any;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(SelectFilterComponent);
@@ -65,7 +61,6 @@ describe('DlDateTimePickerComponent startDate', () => {
         fixture.detectChanges();
         component = fixture.componentInstance;
         debugElement = fixture.debugElement;
-        nativeElement = debugElement.nativeElement;
       });
     }));
 
@@ -86,19 +81,15 @@ describe('DlDateTimePickerComponent startDate', () => {
   });
 
   describe('undefined', () => {
-    let component: UndefinedSelectFilterComponent;
     let fixture: ComponentFixture<UndefinedSelectFilterComponent>;
     let debugElement: DebugElement;
-    let nativeElement: any;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(UndefinedSelectFilterComponent);
       fixture.detectChanges();
       fixture.whenStable().then(() => {
         fixture.detectChanges();
-        component = fixture.componentInstance;
         debugElement = fixture.debugElement;
-        nativeElement = debugElement.nativeElement;
       });
     }));
 

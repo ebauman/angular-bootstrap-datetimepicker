@@ -7,19 +7,17 @@
  * found in the LICENSE file at https://github.com/dalelotts/angular-bootstrap-datetimepicker/blob/master/LICENSE
  */
 
-import {Component, DebugElement, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {DlDateTimeStringModule} from '../../../core';
-import {DlDateTimePickerComponent} from '../../dl-date-time-picker.component';
-import {DlDateTimePickerModule} from '../../index';
+import {DlDateTimePickerComponent, DlDateTimePickerModule, DlDateTimeStringModule} from '../../../public-api';
 
 
 @Component({
   template: '<dl-date-time-picker minView="day"></dl-date-time-picker>'
 })
 class ModelTypeComponent {
-  @ViewChild(DlDateTimePickerComponent) picker: DlDateTimePickerComponent<string>;
+  @ViewChild(DlDateTimePickerComponent, {static: false}) picker: DlDateTimePickerComponent<string>;
 }
 
 describe('DlDateTimePickerComponent modelType', () => {
@@ -40,8 +38,6 @@ describe('DlDateTimePickerComponent modelType', () => {
   describe('string formatted Date', () => {
     let component: ModelTypeComponent;
     let fixture: ComponentFixture<ModelTypeComponent>;
-    let debugElement: DebugElement;
-    let nativeElement: any;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(ModelTypeComponent);
@@ -49,8 +45,6 @@ describe('DlDateTimePickerComponent modelType', () => {
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         component = fixture.componentInstance;
-        debugElement = fixture.debugElement;
-        nativeElement = debugElement.nativeElement;
       });
     }));
 

@@ -1,12 +1,12 @@
-<div class="text-center dl-abdtp-{{_model.viewName}}-view ">
+<div class="text-center dl-abdtp-{{_model.viewName}}-view" [attr.data-dl-abdtp-view]="_model.viewName">
   <div class="clr-row align-items-center no-gutters">
     <button class="clr-col dl-abdtp-left-button align-items-center"
             type="button"
             [attr.aria-label]="_model.leftButton.ariaLabel"
+            [attr.dl-abdtp-value]="_model.leftButton.value"
             [attr.title]="_model.leftButton.ariaLabel"
-            [ngClass]="_model.leftButton.classes"
-            (click)="_onLeftClick()">
-      <span class="left-icon" [ngClass]="leftIconClass"></span>
+            (click)="_onLeftClick()"
+    ><span class="left-icon" [ngClass]="leftIconClass"></span>
     </button>
 
     <div *ngIf="_model.viewName === (this.maxView || 'year'); then maxViewLabel else defaultViewLabel;"></div>
@@ -14,10 +14,10 @@
     <button class="clr-col dl-abdtp-right-button"
             type="button"
             [attr.aria-label]="_model.rightButton.ariaLabel"
+            [attr.dl-abdtp-value]="_model.rightButton.value"
             [attr.title]="_model.rightButton.ariaLabel"
             (click)="_onRightClick()"
-            [ngClass]="_model.rightButton.classes">
-      <span class="right-icon" [ngClass]="rightIconClass"></span>
+    ><span class="right-icon" [ngClass]="rightIconClass"></span>
     </button>
   </div>
   <div (keydown)="_handleKeyDown($event)">
@@ -31,6 +31,7 @@
            [ngClass]="cell.classes"
            [attr.aria-label]="cell.ariaLabel"
            [attr.aria-disabled]="cell.classes['dl-abdtp-disabled']"
+           [attr.dl-abdtp-value]="cell.value"
            [attr.tabindex]="cell.classes['dl-abdtp-active'] ? 0 : -1"
            (click)="_onDateClick(cell)"
            (keydown.space)="_onDateClick(cell)"
@@ -47,6 +48,7 @@
   <button class="clr-col-10 dl-abdtp-view-label dl-abdtp-up-button"
           type="button"
           [attr.aria-label]="_model.upButton.ariaLabel"
+          [attr.dl-abdtp-value]="_model.upButton.value"
           [attr.title]="_model.upButton.ariaLabel"
           (click)="_onUpClick()"
           [ngClass]="_model.upButton.classes"

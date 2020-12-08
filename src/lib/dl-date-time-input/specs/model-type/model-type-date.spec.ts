@@ -11,8 +11,7 @@ import {Component, DebugElement, ViewChild} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
-import {DlDateTimeDateModule} from '../../../core';
-import {DlDateTimeInputDirective, DlDateTimeInputModule} from '../../index';
+import {DlDateTimeDateModule, DlDateTimeInputDirective, DlDateTimeInputModule} from '../../../public-api';
 
 @Component({
   template: `<input id="dateInput"
@@ -23,7 +22,7 @@ import {DlDateTimeInputDirective, DlDateTimeInputModule} from '../../index';
                     [(ngModel)]="dateValue"/>`
 })
 class ModelTypeComponent {
-  @ViewChild(DlDateTimeInputDirective) input: DlDateTimeInputDirective<number>;
+  @ViewChild(DlDateTimeInputDirective, {static: false}) input: DlDateTimeInputDirective<number>;
 }
 
 describe('DlDateTimeInputDirective modelType', () => {
@@ -46,7 +45,6 @@ describe('DlDateTimeInputDirective modelType', () => {
     let component: ModelTypeComponent;
     let fixture: ComponentFixture<ModelTypeComponent>;
     let debugElement: DebugElement;
-    let nativeElement: any;
 
     beforeEach(async(() => {
       fixture = TestBed.createComponent(ModelTypeComponent);
@@ -55,7 +53,6 @@ describe('DlDateTimeInputDirective modelType', () => {
         fixture.detectChanges();
         component = fixture.componentInstance;
         debugElement = fixture.debugElement;
-        nativeElement = debugElement.nativeElement;
       });
     }));
 
